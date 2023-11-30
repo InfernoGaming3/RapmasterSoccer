@@ -15,9 +15,9 @@ MonoBehaviour:
   charName: dj
   animatorController: {fileID: 9100000, guid: d122ddf3b1ef9e44b82d25c52376b3a4, type: 2}
   initialSpeed: 1
-  runSpeed: 3
+  runSpeed: 4
   airSpeed: 1
-  accel: 0.05
+  accel: 0.08
   deccel: 0.3
   jumpHeight: 5
   midairJumpHeight: 4

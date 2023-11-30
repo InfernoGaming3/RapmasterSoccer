@@ -272,7 +272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerupIndex: 2
-  powerupCost: 11
+  powerupCost: 5
   image: {fileID: 1857977545}
   costText: {fileID: 550890613}
 --- !u!1 &77611573
@@ -807,7 +807,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerupIndex: 6
-  powerupCost: 20
+  powerupCost: 8
   image: {fileID: 1959040851}
   costText: {fileID: 115174693}
 --- !u!1 &339084893
@@ -1232,7 +1232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerupIndex: 0
-  powerupCost: 5
+  powerupCost: 1
   image: {fileID: 1245063853}
   costText: {fileID: 1472349311}
 --- !u!1 &469208272
@@ -2323,6 +2323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b849bc35a15264f8623171db8d015e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  image: {fileID: 400215110}
 --- !u!1 &1100729686
 GameObject:
   m_ObjectHideFlags: 0
@@ -2472,7 +2473,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerupIndex: 5
-  powerupCost: 14
+  powerupCost: 7
   image: {fileID: 2095871837}
   costText: {fileID: 742525322}
 --- !u!1 &1113434525
@@ -3013,7 +3014,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerupIndex: 3
-  powerupCost: 13
+  powerupCost: 6
   image: {fileID: 1965518925}
   costText: {fileID: 933422582}
 --- !u!1 &1283549412
@@ -3165,7 +3166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerupIndex: 1
-  powerupCost: 8
+  powerupCost: 3
   image: {fileID: 1981640336}
   costText: {fileID: 234372597}
 --- !u!1 &1380971120
@@ -3587,7 +3588,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerupIndex: 4
-  powerupCost: 10
+  powerupCost: 4
   image: {fileID: 902080811}
   costText: {fileID: 1113434527}
 --- !u!1 &1857977543

@@ -10,6 +10,7 @@ public class Hitbox : MonoBehaviour
     [SerializeField] Hitboxes hitboxParent;
     [SerializeField] bool isBall;
 
+    [SerializeField] PlayerController ownerController;
 
     // Start is called before the first frame update
     void Start()
@@ -49,12 +50,19 @@ public class Hitbox : MonoBehaviour
 
         if (_playerController != null)
         {
-            _playerController.DamgePlayer(damage, kb, hitstun);
+            if (isBall) 
+            {
+                _playerController.DamgePlayer(damage, kb, hitstun, 1);
+                GetComponentInParent<Ball>().MirrorBallSpeed();
+            } else
+            {
+                _playerController.DamgePlayer(damage, kb, hitstun, ownerController.GetAttackBoost());
+            }
+
             if (hitboxParent != null) {
                 hitboxParent.deactivateHitboxes = true;
                 hitboxParent.CreateHitEffect(transform.position, hitstun);
             }
-            if (isBall) GetComponentInParent<Ball>().MirrorBallSpeed();     
         }
 
         if (_ball != null)

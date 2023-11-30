@@ -49,7 +49,6 @@ public class UI_CharacterSelect : MonoBehaviour
 
         startGameButton.onClick.AddListener(() =>
         {
-            GameMaster.instance.RandomlyPickP2Character();
             //p2Image.sprite = GameMaster.instance.p2Character.cssSprite;
             GameMaster.instance.StartGame();
             SceneManager.LoadScene("GrassField");

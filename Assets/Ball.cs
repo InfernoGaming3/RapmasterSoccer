@@ -11,7 +11,7 @@ public class Ball : MonoBehaviour
     [SerializeField] BoxCollider2D bc;
 
     bool carried = false;
-    bool collectable = false;
+    public bool collectable = false;
     GameObject carryParent;
 
     [SerializeField] float fallSpeed;
@@ -33,6 +33,8 @@ public class Ball : MonoBehaviour
     void Start()
     {
         //startPos = transform.position;
+        GameObject[] balls = GameObject.FindGameObjectsWithTag("Ball");
+        if (balls.Length >= 2) Destroy(this.gameObject);
         StartCoroutine(AllowContact());
         rb.gravityScale = fallSpeed;
     }
@@ -64,7 +66,7 @@ public class Ball : MonoBehaviour
         }
 
 
-        collectable = rb.velocity.sqrMagnitude < 5;
+        collectable = rb.velocity.sqrMagnitude < 10;
         
     }
 
@@ -96,7 +98,7 @@ public class Ball : MonoBehaviour
         hitbox.layer = hitboxLayer;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         PlayerController _playerController = collision.collider.GetComponent<PlayerController>();
         if (_playerController != null) 
@@ -147,7 +149,7 @@ public class Ball : MonoBehaviour
     {
         rb.velocity = Vector3.zero;
         transform.position = startPos;
-        onBallRespawn();
+        if(GameMaster.instance.CheckBallsOnField()) onBallRespawn();
         if (inCement == "WaterL")
         {
             GameMaster.instance.p2Score++;

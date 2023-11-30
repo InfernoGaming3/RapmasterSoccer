@@ -17,8 +17,8 @@ MonoBehaviour:
   initialSpeed: 8
   runSpeed: 8
   airSpeed: 2
-  accel: 0.05
-  deccel: 0.05
+  accel: 0.08
+  deccel: 0.3
   jumpHeight: 5
   midairJumpHeight: 4
   fallSpeed: 1

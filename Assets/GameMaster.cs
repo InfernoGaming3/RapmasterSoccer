@@ -28,6 +28,9 @@ public class GameMaster : MonoBehaviour
 
     public float[] p2StatBoosts = new float[5];
 
+    public int ballCount;
+    public int maxBallsOnField = 1;
+
     public CharacterStats[] characterStats;
     Coroutine timerCO;
 
@@ -41,7 +44,21 @@ public class GameMaster : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
+    }
 
+    public void SetBallOnField()
+    {
+        ballCount = 1;
+    }
+
+    public void RemoveBallOnField()
+    {
+        ballCount = 0;
+    }
+
+    public bool CheckBallsOnField()
+    {
+        return ballCount <= maxBallsOnField;
     }
 
     private void Start()
@@ -52,7 +69,7 @@ public class GameMaster : MonoBehaviour
     IEnumerator DecrementTimerCount()
     {
         yield return new WaitForSeconds(1);
-        print("decreaseTimerCO happened!");
+        //print("decreaseTimerCO happened!");
         if(timerCount <= 0)
         {
             p1cash += p1Score;
@@ -67,7 +84,7 @@ public class GameMaster : MonoBehaviour
 
     void DecreaseTimer()
     {
-        print("decreaseTimer called!");
+        //print("decreaseTimer called!");
         timerCO = StartCoroutine(DecrementTimerCount());
     }
 
@@ -76,6 +93,7 @@ public class GameMaster : MonoBehaviour
         print("start called!");
         timerCount = timer;
         if (timerCO != null) StopCoroutine(timerCO);
+        IncreaseP2StatsRandomly();
         RandomlyPickP2Character();
         DecreaseTimer();
     }
@@ -106,6 +124,7 @@ public class GameMaster : MonoBehaviour
     {
         int rng = Random.Range(0, characterStats.Length);
         p2Character = characterStats[rng];
+        p2percentage = 0;
     }
 
     public void SetP1Percentage(float percent)
@@ -116,5 +135,64 @@ public class GameMaster : MonoBehaviour
     public void SetP2Percentage(float percent)
     {
         p2percentage = percent;
+    }
+
+    public void IncreaseP1Stats(int powerupIndex, int powerupCost)
+    {
+        switch (powerupIndex)
+        {
+            case 0:
+                p1percentage -= p1percentage / 4;
+                break;
+            case 1:
+                p1StatBoosts[0] += 0.1f;
+                break;
+            case 2:
+                p1StatBoosts[2] += 0.1f;
+                break;
+            case 3:
+                p1StatBoosts[3] += 0.1f;
+                break;
+            case 4:
+                p1StatBoosts[1] += 1f;
+                break;
+            case 5:
+                p1StatBoosts[4] += 0.1f;
+                break;
+            case 6:
+                p1StatBoosts[5] += 0.1f;
+                break;
+            case 7:
+                p1stocks++;
+                break;
+        }
+        p1cash -= powerupCost;
+    }
+
+    public void IncreaseP2StatsRandomly()
+    {
+        int powerupIndex = Random.Range(1, 7);
+
+        switch (powerupIndex)
+        {
+            case 1:
+                p2StatBoosts[0] += 0.1f;
+                break;
+            case 2:
+                p2StatBoosts[2] += 0.1f;
+                break;
+            case 3:
+                p2StatBoosts[3] += 0.1f;
+                break;
+            case 4:
+                p2StatBoosts[1] += 1f;
+                break;
+            case 5:
+                p2StatBoosts[4] += 0.1f;
+                break;
+            case 6:
+                p2StatBoosts[5] += 0.1f;
+                break;
+        }
     }
 }

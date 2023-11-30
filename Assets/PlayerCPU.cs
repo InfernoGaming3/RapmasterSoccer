@@ -69,7 +69,7 @@ public class PlayerCPU : MonoBehaviour
 
     void GoToState()
     {
-        print("GoToState called");
+        //print("GoToState called");
         ballTarget = GameObject.FindGameObjectWithTag("Ball");
         PlayerMoveset enemyMoveset = playerTarget.GetComponent<PlayerController>().playerMoveset;
         if (!playerController.playerMoveset.IsHoldingItem() && !enemyMoveset.IsHoldingItem())

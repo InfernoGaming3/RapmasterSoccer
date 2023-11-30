@@ -8,6 +8,7 @@ public class PlayerMoveset : MonoBehaviour
     [SerializeField] public string character;
     public bool attacking = false;
     public bool aerialAttack = false;
+    public bool dashAttack = false;
     public bool hurt;
     [SerializeField] Animator anim;
     [SerializeField] GameObject[] hitboxes;
@@ -147,6 +148,7 @@ public class PlayerMoveset : MonoBehaviour
     public void AttackEnd()
     {
         attacking = false;
+        dashAttack = false;
     }
 
     public void ThrowItem(string vectorDir)
@@ -179,6 +181,19 @@ public class PlayerMoveset : MonoBehaviour
         GameObject smoke = Instantiate(smokePrefab, transform.position, Quaternion.identity);
         Destroy(smoke, 1f);
         if(hurt) SpawnTrailSmoke();
+    }
+
+    public void DashAttack()
+    {
+        dashAttack = true;
+    }
+
+    public void ResetAnimBools()
+    {
+        attacking = false;
+        hurt = false;
+        aerialAttack = false;
+        dashAttack = false;
     }
 
 }

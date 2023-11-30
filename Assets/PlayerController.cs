@@ -70,6 +70,12 @@ public class PlayerController : MonoBehaviour
     public static event PlayerHurt onPlayerHurt;
 
 
+    void Awake()
+    {
+        curStats = (playerIndex == 0) ? GameMaster.instance.p1Character : GameMaster.instance.p2Character;
+        InitializeStats();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -78,8 +84,6 @@ public class PlayerController : MonoBehaviour
         spawnPos = transform.position;
         jumps = maxJumps;
 
-        curStats = (playerIndex == 0) ? GameMaster.instance.p1Character : GameMaster.instance.p2Character;
-        InitializeStats();
       //  playerInputActions = new PlayerInputActions();
       //  playerInputActions.Enable();
       //  playerInputActions.General.Jump.performed += Jump;
@@ -109,9 +113,14 @@ public class PlayerController : MonoBehaviour
         bc.offset = new Vector2(curStats.bcXOffset, curStats.bcYOffset);
         bc.size = new Vector2(curStats.bcXSize, curStats.bcYSize);
 
+        //rb.mass = curStats.weight / 100;
         rb.gravityScale = curStats.fallSpeed;
     }
 
+    public Sprite GetPlayerPortrait()
+    {
+        return curStats.cssSprite;
+    }
 
     public bool IsDead()
     {
@@ -128,6 +137,11 @@ public class PlayerController : MonoBehaviour
         return playerIndex;
     }
 
+    public float GetAttackBoost()
+    {
+        return statBoosts[0];
+    }
+
     void FindDirection()
     {
         if (jumpOn && !playerMoveset.attacking) direction = (input.x > 0) ? 1 : (input.x < 0) ? -1 : direction;
@@ -140,9 +154,13 @@ public class PlayerController : MonoBehaviour
         float curSpeed = (jumpOn) ? speed : airspeed;
         float targetSpeedX = input.x * curSpeed;
         float smoothTime = (input.x != 0) ? smoothingAccel : smoothingDeccel;
-
+        if (playerMoveset.attacking && jumpOn && !playerMoveset.dashAttack) {
+            targetSpeedX = 0;
+            smoothTime += 0.5f;
+        } 
         float smoothSpeed = Mathf.SmoothDamp(rb.velocity.x, targetSpeedX, ref velocityXSmoothing, smoothTime);
-        if (!playerMoveset.attacking && !playerMoveset.hurt) rb.velocity = new Vector2(smoothSpeed, rb.velocity.y);
+
+        if (!playerMoveset.hurt && !playerMoveset.dashAttack) rb.velocity = new Vector2(smoothSpeed, rb.velocity.y);
     }
 
     void DetectGround()
@@ -191,7 +209,13 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         // if (curPlayer == PlayerType.Player1) input = playerInputActions.General.Move.ReadValue<Vector2>();
-        if (dead) return;
+        if (dead) {
+            playerMoveset.attacking = false;
+            playerMoveset.aerialAttack = false;
+            anim.Play(playerMoveset.character + "_idle");
+            return;
+        } 
+
         FindDirection();
         CalculateSpeed();
         DetectGround();
@@ -259,7 +283,6 @@ public class PlayerController : MonoBehaviour
             jumpCooldown = true;
             StartCoroutine(EndJumpCooldown());
         }
-
     }
 
     IEnumerator EndJumpCooldown()
@@ -279,13 +302,16 @@ public class PlayerController : MonoBehaviour
         playerMoveset.DetectAttackInput(input, jumpOn, direction);
     }
 
-    public void DamgePlayer(float damage, Vector2 knockback, float hitstun)
+    public void DamgePlayer(float damage, Vector2 knockback, float hitstun, float damageMultiplier)
     {
         if(playerHurtCO != null) StopCoroutine(playerHurtCO);
         if (playerMoveset.IsHoldingItem()) playerMoveset.ThrowItem("0,0");
 
+        playerMoveset.attacking = false;
+        playerMoveset.dashAttack = false;
         float percentage = (playerIndex == 0) ? GameMaster.instance.p1percentage : GameMaster.instance.p2percentage;
-        percentage += (int)damage;
+        percentage += damage * damageMultiplier;
+        print("statBoost: " + damageMultiplier + ",damage: " + damageMultiplier * damage);
         playerMoveset.hurt = true;
         if(knockback.x > 3 || knockback.y > 3) playerMoveset.SpawnTrailSmoke();
         anim.Play(playerMoveset.character + "_hurt");
@@ -295,7 +321,7 @@ public class PlayerController : MonoBehaviour
         print("kbkbck: " + knockbackWeightReduc + "percentMul: " + percentMul);
         rb.velocity = new Vector2(knockback.x, knockback.y) * knockbackWeightReduc * percentMul;
         print("vel: x" + rb.velocity.x + " y: " + rb.velocity.y + " mul:" + knockbackWeightReduc + " weight: " + curStats.weight);
-        playerHurtCO = StartCoroutine(EndPlayerHitstun(hitstun));
+        playerHurtCO = StartCoroutine(EndPlayerHitstun(hitstun * percentMul));
         onPlayerHurt();
         if (playerIndex == 0) GameMaster.instance.SetP1Percentage(percentage); else GameMaster.instance.SetP2Percentage(percentage);
     }

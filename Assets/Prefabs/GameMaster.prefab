@@ -48,12 +48,14 @@ MonoBehaviour:
   p2Character: {fileID: 11400000, guid: fb31adfaf34a1374fb73cb1116eb07ac, type: 2}
   p1Score: 0
   p2Score: 0
+  p1percentage: 0
+  p2percentage: 0
   timer: 60
   timerCount: 0
   p1stocks: 0
-  p1percentage: 0
   p1cash: 0
   p1StatBoosts:
+  - 1
   - 1
   - 1
   - 1
@@ -65,6 +67,9 @@ MonoBehaviour:
   - 1
   - 1
   - 1
+  - 1
+  ballCount: 0
+  maxBallsOnField: 1
   characterStats:
   - {fileID: 11400000, guid: 2116dfd92c0b5764d818abbc318d89a1, type: 2}
   - {fileID: 11400000, guid: fb31adfaf34a1374fb73cb1116eb07ac, type: 2}
