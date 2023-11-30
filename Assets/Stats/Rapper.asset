@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a68a859d8e327041bc227acd29311f6, type: 3}
+  m_Name: Rapper
+  m_EditorClassIdentifier: 
+  charName: rap
+  animatorController: {fileID: 9100000, guid: 18894157da66b57408cbd00d45d1434c, type: 2}
+  initialSpeed: 3
+  runSpeed: 5
+  airSpeed: 3
+  accel: 0.05
+  deccel: 0.3
+  jumpHeight: 5
+  midairJumpHeight: 4
+  fallSpeed: 0.8
+  weight: 90
+  bcXOffset: 0
+  bcYOffset: 0.18
+  bcXSize: 0.5
+  bcYSize: 0.8
+  cssSprite: {fileID: 1817633899, guid: 8995e9363c1744c4580c951daff3e1b5, type: 3}

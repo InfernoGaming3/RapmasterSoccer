@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a68a859d8e327041bc227acd29311f6, type: 3}
+  m_Name: DJ
+  m_EditorClassIdentifier: 
+  charName: dj
+  animatorController: {fileID: 9100000, guid: d122ddf3b1ef9e44b82d25c52376b3a4, type: 2}
+  initialSpeed: 1
+  runSpeed: 3
+  airSpeed: 1
+  accel: 0.05
+  deccel: 0.3
+  jumpHeight: 5
+  midairJumpHeight: 4
+  fallSpeed: 0.75
+  weight: 130
+  bcXOffset: 0
+  bcYOffset: 0.13
+  bcXSize: 1.3
+  bcYSize: 1.27
+  cssSprite: {fileID: -644806051, guid: e9fc7e7c6afd21a4e8482a23b59b1129, type: 3}
