@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class UI_PowerupButton : MonoBehaviour
+public class UI_PowerupButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public int powerupIndex;
     public int powerupCost;
@@ -21,6 +22,17 @@ public class UI_PowerupButton : MonoBehaviour
         }
     }
 
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        GameMaster.instance.ShowPowerupDesc(true, powerupIndex);
+        Debug.Log("Mouse enter");
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        GameMaster.instance.ShowPowerupDesc(false, 0);
+        Debug.Log("Mouse exit");
+    }
     public void OnPowerupButtonClicked()
     {
         if (GameMaster.instance.p1cash < powerupCost) return;

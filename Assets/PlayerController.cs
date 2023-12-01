@@ -47,11 +47,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float jumpCooldownTimer;
     [SerializeField] float coyoteTime = 10;
     [SerializeField] float respawnTimer;
+    bool roundStart = false;
+
+    [SerializeField] AudioSource audioSource;
 
 
     //Stat boosts refer to the boosts you get at the shop
-    //0 is for power, 1 is for weight, 2 is speed, 3 is jump, 4 is haste,
-    //5 is whatever the soccer thing is.
+    //0 is for power, 1 is for weight, 2 is speed, 3 is jump, 4 is soccer,
+    //5 is haste.
     [SerializeField] float[] statBoosts = new float[5];
 
     float coyoteTimeCounter = 0;  
@@ -83,11 +86,13 @@ public class PlayerController : MonoBehaviour
         direction = 1;
         spawnPos = transform.position;
         jumps = maxJumps;
+        Invoke(nameof(StartRound), 3.0f);
 
-      //  playerInputActions = new PlayerInputActions();
-      //  playerInputActions.Enable();
-      //  playerInputActions.General.Jump.performed += Jump;
+    }
 
+    void StartRound()
+    {
+        roundStart = true;
     }
 
     void InitializeStats()
@@ -140,6 +145,11 @@ public class PlayerController : MonoBehaviour
     public float GetAttackBoost()
     {
         return statBoosts[0];
+    }
+
+    public float GetSoccerballBoost()
+    {
+        return statBoosts[4];
     }
 
     void FindDirection()
@@ -214,7 +224,8 @@ public class PlayerController : MonoBehaviour
             playerMoveset.aerialAttack = false;
             anim.Play(playerMoveset.character + "_idle");
             return;
-        } 
+        }
+        if (!roundStart) return;
 
         FindDirection();
         CalculateSpeed();
@@ -231,11 +242,8 @@ public class PlayerController : MonoBehaviour
             dDialogue.deathType = 2;
             dDialogue.playerDeathPos = transform.position;
             dDialogue.dialogueMessage = "Bummer.";
-            StartCoroutine(RespawnPlayer());
-            dead = true;
-            if(playerMoveset.IsHoldingItem()) playerMoveset.ThrowItem("0,0");
-            if (playerIndex == 0) GameMaster.instance.SetP1Percentage(0); else GameMaster.instance.SetP2Percentage(0);
-            onPlayerDeath();
+            KillPlayer();
+
         } 
         else if (leftRightBounds && !dead)
         {
@@ -244,12 +252,19 @@ public class PlayerController : MonoBehaviour
             dDialogue.deathType = (transform.position.x > xDieDistance) ? 1 : -1;
             dDialogue.playerDeathPos = transform.position;
             dDialogue.dialogueMessage = "Bogus.";
-            StartCoroutine(RespawnPlayer());
-            dead = true;
-            if (playerMoveset.IsHoldingItem()) playerMoveset.ThrowItem("0,0");
-            if (playerIndex == 0) GameMaster.instance.SetP1Percentage(0); else GameMaster.instance.SetP2Percentage(0);
-            onPlayerDeath();
+            KillPlayer();
         }
+    }
+
+    void KillPlayer()
+    {
+        GameMaster.instance.PlaySound(14);
+        StartCoroutine(RespawnPlayer());
+        dead = true;
+        if (playerMoveset.IsHoldingItem()) playerMoveset.ThrowItem("0,0");
+        if (playerIndex == 0) GameMaster.instance.SetP1Percentage(0); else GameMaster.instance.SetP2Percentage(0);
+        if(playerIndex == 0)GameMaster.instance.RemoveStock();
+        onPlayerDeath();
     }
 
     IEnumerator RespawnPlayer()
@@ -266,7 +281,7 @@ public class PlayerController : MonoBehaviour
 
     public void Jump()
     {
-        if (playerMoveset.attacking || playerMoveset.hurt || jumpCooldown) return;
+        if (playerMoveset.attacking || playerMoveset.hurt || jumpCooldown || !roundStart) return;
         if (jumpOn)
         {
             jumps--;
@@ -299,7 +314,7 @@ public class PlayerController : MonoBehaviour
 
     public void Attack()
     {
-        playerMoveset.DetectAttackInput(input, jumpOn, direction);
+        playerMoveset.DetectAttackInput(input, jumpOn, direction, statBoosts[5]);
     }
 
     public void DamgePlayer(float damage, Vector2 knockback, float hitstun, float damageMultiplier)

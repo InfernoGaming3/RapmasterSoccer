@@ -25,7 +25,6 @@ public class Ball : MonoBehaviour
     public delegate void BallRespawn();
     public static event BallRespawn onBallRespawn;
 
-    Coroutine scoreBallCO;
     bool scoringBall = false;
 
 
@@ -103,8 +102,9 @@ public class Ball : MonoBehaviour
         PlayerController _playerController = collision.collider.GetComponent<PlayerController>();
         if (_playerController != null) 
         {
-            if(!_playerController.IsAttacking() && !hitbox.activeInHierarchy && collectable)
+            if(!_playerController.IsAttacking() && !hitbox.activeInHierarchy)
             {
+                GameMaster.instance.PlaySound(15);
                 Destroy(this.gameObject);
                 _playerController.SetHeldItem(true);
                 onBallCollect();
@@ -122,7 +122,7 @@ public class Ball : MonoBehaviour
         {
             rb.velocity = Vector2.zero;
             inCement = collision.gameObject.name;
-            if(!scoringBall) scoreBallCO = StartCoroutine(ScoreBallInZone());
+            if(!scoringBall) StartCoroutine(ScoreBallInZone());
         }
     }
 
@@ -147,6 +147,7 @@ public class Ball : MonoBehaviour
 
     void BallScored()
     {
+        GameMaster.instance.PlaySound(13);
         rb.velocity = Vector3.zero;
         transform.position = startPos;
         if(GameMaster.instance.CheckBallsOnField()) onBallRespawn();

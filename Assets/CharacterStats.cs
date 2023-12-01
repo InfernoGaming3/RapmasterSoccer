@@ -27,5 +27,6 @@ public class CharacterStats : ScriptableObject
     public float bcYSize;
 
     public Sprite cssSprite;
+    public Sprite stockIcon;
     
 }

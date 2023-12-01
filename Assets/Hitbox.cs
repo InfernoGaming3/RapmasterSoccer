@@ -9,19 +9,14 @@ public class Hitbox : MonoBehaviour
     [SerializeField] float hitstun;
     [SerializeField] Hitboxes hitboxParent;
     [SerializeField] bool isBall;
+    [SerializeField] int playSoundIndex;
 
     [SerializeField] PlayerController ownerController;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    public void SetOwnerController(PlayerController playerController)
     {
-        
+        ownerController = playerController;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -50,9 +45,11 @@ public class Hitbox : MonoBehaviour
 
         if (_playerController != null)
         {
+            GameMaster.instance.PlaySound(playSoundIndex);
             if (isBall) 
             {
-                _playerController.DamgePlayer(damage, kb, hitstun, 1);
+                if (ownerController != null) _playerController.DamgePlayer(damage, kb, hitstun, ownerController.GetSoccerballBoost());
+                else _playerController.DamgePlayer(damage, kb, hitstun, 1);
                 GetComponentInParent<Ball>().MirrorBallSpeed();
             } else
             {
@@ -67,6 +64,7 @@ public class Hitbox : MonoBehaviour
 
         if (_ball != null)
         {
+            GameMaster.instance.PlaySound(playSoundIndex);
             _ball.ApplyKnockback(kb, 1.5f);
             int attackerLayer = (GetComponentInParent<PlayerController>().GetPlayerIndex() == 0) ? 8 : 9;
             _ball.EnableHitbox(attackerLayer);

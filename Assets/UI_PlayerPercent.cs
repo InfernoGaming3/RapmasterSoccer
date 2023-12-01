@@ -14,6 +14,7 @@ public class UI_PlayerPercent : MonoBehaviour
     [SerializeField] Image image;
     [SerializeField] Image ballImage;
     [SerializeField] bool p1;
+    [SerializeField] TextMeshProUGUI stocksText;
 
     // Start is called before the first frame update
     void Start()
@@ -29,5 +30,7 @@ public class UI_PlayerPercent : MonoBehaviour
         percentShadow.SetText(percentText.text);
 
         if (playerController.playerMoveset.IsHoldingItem()) ballImage.color = new Color(1, 1, 1, 1); else ballImage.color = new Color(1,1,1,0);
+        if (p1) stocksText.SetText("Stocks:"+ GameMaster.instance.p1stocks);
+
     }
 }

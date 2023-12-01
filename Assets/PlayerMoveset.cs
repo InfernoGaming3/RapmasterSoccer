@@ -58,22 +58,24 @@ public class PlayerMoveset : MonoBehaviour
     public void StopAerialOnGround(bool grounded)
     {
         if (grounded && aerialAttack) attacking = false;
+        anim.speed = 1f;
     }
 
-    public void DetectAttackInput(Vector2 input, bool grounded, float direction)
+    public void DetectAttackInput(Vector2 input, bool grounded, float direction, float atkSpeed)
     {
         if (attacking || hurt) return;
         attacking = true;
+        anim.speed = atkSpeed;
         if (holdingItem)
         {
-            DetectItemThrow(input, direction);
+            DetectItemThrow(input, direction, atkSpeed);
         } else
         {
             if (grounded) DetectedGroundedAttack(input); else DetectAerialAttack(input, direction);
         }
     }
 
-    void DetectItemThrow(Vector2 input, float direction)
+    void DetectItemThrow(Vector2 input, float direction, float atkSpeed)
     {
         aerialAttack = false;
         bool forward = (direction == 1 && input.x > 0 || direction == -1 && input.x < 0);
@@ -149,12 +151,13 @@ public class PlayerMoveset : MonoBehaviour
     {
         attacking = false;
         dashAttack = false;
+        anim.speed = 1f;
     }
 
     public void ThrowItem(string vectorDir)
     {
         GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
-
+        GameMaster.instance.PlaySound(12);
         string[] vectors = vectorDir.Split(",");
         int xSpeed =  Int32.Parse(vectors[0]);
         int ySpeed = Int32.Parse(vectors[1]);
@@ -165,7 +168,9 @@ public class PlayerMoveset : MonoBehaviour
         ball.GetComponent<Ball>().EnableHitbox(attackerLayer);
         float xDir = GetComponentInParent<PlayerController>().direction;
 
-        ball.GetComponent<Ball>().ApplyKnockback(new Vector2(xSpeed * xDir, ySpeed), 1);
+        Ball ballScript = ball.GetComponent<Ball>();
+        ballScript.ApplyKnockback(new Vector2(xSpeed * xDir, ySpeed), 1);
+        ballScript.GetComponentInChildren<Hitbox>().SetOwnerController(this.GetComponentInParent<PlayerController>());
         holdingItem = false;
 
     }
@@ -194,6 +199,7 @@ public class PlayerMoveset : MonoBehaviour
         hurt = false;
         aerialAttack = false;
         dashAttack = false;
+        anim.speed = 1f;
     }
 
 }

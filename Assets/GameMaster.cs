@@ -20,7 +20,8 @@ public class GameMaster : MonoBehaviour
     public int timer;
     public int timerCount;
 
-    public int p1stocks;
+    public int p1stocks = 5;
+    public int p1wins = 0;
 
     public int p1cash;
 
@@ -34,6 +35,16 @@ public class GameMaster : MonoBehaviour
     public CharacterStats[] characterStats;
     Coroutine timerCO;
 
+    public int hoverIndex;
+    public bool showPowerupDesc;
+    public string[] powerupDescriptions;
+
+    public AudioClip[] audioClips;
+    public AudioSource audioSource;
+
+    public AudioSource song1;
+    public AudioSource song2;
+
     private void Awake()
     {
         if(instance && instance != this)
@@ -44,16 +55,54 @@ public class GameMaster : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
+        PlayIntroMusic();
     }
 
-    public void SetBallOnField()
+    public void PlaySound(int index)
     {
-        ballCount = 1;
+        audioSource.PlayOneShot(audioClips[index]);
     }
 
-    public void RemoveBallOnField()
+    public void PlayIntroMusic()
     {
-        ballCount = 0;
+        song2.Stop();
+        song1.Play();
+    }
+
+    public void PlayBattleMusic()
+    {
+        song1.Stop();
+        song2.Play();
+    }
+
+    public void ShowPowerupDesc(bool value, int index)
+    {
+        showPowerupDesc = value;
+        hoverIndex = index;
+    }
+
+    public void AddWin()
+    {
+        p1wins++;
+        if(p1wins >= 10)
+        {
+            SceneManager.LoadScene("WinScreen");
+        }
+    }
+
+    public void AddStock()
+    {
+        p1stocks++;
+    }
+
+    public void RemoveStock()
+    {
+        p1stocks--;
+        if(p1stocks <= 0)
+        {
+            ClearGameData();
+            SceneManager.LoadScene("GameOver");
+        }
     }
 
     public bool CheckBallsOnField()
@@ -70,9 +119,10 @@ public class GameMaster : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         //print("decreaseTimerCO happened!");
-        if(timerCount <= 0)
+        if(timerCount <= 0 && p1stocks > 0)
         {
             p1cash += p1Score;
+            if (p1Score > p2Score) AddWin();
             ResetGame();
             SceneManager.LoadScene("PowerupSelect");
         } else
@@ -103,6 +153,19 @@ public class GameMaster : MonoBehaviour
         p1Score = 0;
         p2Score = 0;
         timerCount = timer;
+    }
+
+    void ClearGameData()
+    {
+        p1percentage = 0;
+        p2percentage = 0;
+        p1Score = 0;
+        p2Score = 0;
+        p1wins = 0;
+        p1cash = 0;
+        p1stocks = 5;
+        p1StatBoosts.Select(x => x = 1).ToList();
+        p2StatBoosts.Select(x => x = 1).ToList();
     }
 
     public void IncrementScore(bool p1)
@@ -163,7 +226,7 @@ public class GameMaster : MonoBehaviour
                 p1StatBoosts[5] += 0.1f;
                 break;
             case 7:
-                p1stocks++;
+                AddStock();
                 break;
         }
         p1cash -= powerupCost;

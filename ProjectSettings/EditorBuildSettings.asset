@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/TitleScreen.unity
+    guid: 75cde6cf442b5864e99dbb8281ca6b17
+  - enabled: 1
+    path: Assets/Scenes/InfoScreen.unity
+    guid: 0dba27dc95c6e91448540deb2dfb785a
+  - enabled: 1
     path: Assets/Scenes/CharacterSelect.unity
     guid: 98a680d585a6f3c4fab81fece82e0059
   - enabled: 1
@@ -17,5 +23,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PowerupSelect.unity
     guid: 6011773c6e2bf3e4fa8e332bab88c4f9
+  - enabled: 1
+    path: Assets/Scenes/GameOver.unity
+    guid: e597c784cc189c6449bd3976a7bb5e07
+  - enabled: 1
+    path: Assets/Scenes/WinScreen.unity
+    guid: 927e9ddbc06aa07409fceda0a03f3fe8
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 95ef91bbb58a51446ac0a2e38528ba3d, type: 2}

@@ -6,6 +6,9 @@ using TMPro;
 public class UI_Cash : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI text;
+    [SerializeField] TextMeshProUGUI percentageText;
+    [SerializeField] TextMeshProUGUI stockText;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,5 +19,7 @@ public class UI_Cash : MonoBehaviour
     void Update()
     {
         text.SetText("Cash $" + GameMaster.instance.p1cash);
+        percentageText.SetText(GameMaster.instance.p1percentage.ToString("F1") + "%");
+        stockText.SetText("Stocks: " + GameMaster.instance.p1stocks);
     }
 }

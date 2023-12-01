@@ -28,3 +28,4 @@ MonoBehaviour:
   bcXSize: 1.3
   bcYSize: 1.27
   cssSprite: {fileID: -644806051, guid: e9fc7e7c6afd21a4e8482a23b59b1129, type: 3}
+  stockIcon: {fileID: 866142357, guid: 3d9aa683deeb98740a753a331cb5450e, type: 3}
