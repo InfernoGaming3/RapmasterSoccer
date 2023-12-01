@@ -20,6 +20,5 @@ public class UI_Cash : MonoBehaviour
     {
         text.SetText("Cash $" + GameMaster.instance.p1cash);
         percentageText.SetText(GameMaster.instance.p1percentage.ToString("F1") + "%");
-        stockText.SetText("Stocks: " + GameMaster.instance.p1stocks);
     }
 }

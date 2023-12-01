@@ -98,11 +98,13 @@ public class GameMaster : MonoBehaviour
     public void RemoveStock()
     {
         p1stocks--;
+        /*
         if(p1stocks <= 0)
         {
             ClearGameData();
             SceneManager.LoadScene("GameOver");
         }
+        */
     }
 
     public bool CheckBallsOnField()
@@ -119,7 +121,7 @@ public class GameMaster : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         //print("decreaseTimerCO happened!");
-        if(timerCount <= 0 && p1stocks > 0)
+        if(timerCount <= 0)
         {
             p1cash += p1Score;
             if (p1Score > p2Score) AddWin();
@@ -140,7 +142,7 @@ public class GameMaster : MonoBehaviour
 
     public void StartGame()
     {
-        print("start called!");
+        //print("start called!");
         timerCount = timer;
         if (timerCO != null) StopCoroutine(timerCO);
         IncreaseP2StatsRandomly();
@@ -256,6 +258,15 @@ public class GameMaster : MonoBehaviour
             case 6:
                 p2StatBoosts[5] += 0.1f;
                 break;
+        }
+    }
+
+    private void Update()
+    {
+        if (p1wins >= 10)
+        {
+            p1wins = 0;
+            SceneManager.LoadScene("WinScreen");
         }
     }
 }

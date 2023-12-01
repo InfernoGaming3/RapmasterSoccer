@@ -31,7 +31,7 @@ public class Hitbox : MonoBehaviour
             if (hitboxParent.deactivateHitboxes) return;
         }
 
-        print("collided with: " + collision.gameObject.name);
+        //print("collided with: " + collision.gameObject.name);
         PlayerController _playerController = collision.gameObject.GetComponent<PlayerController>();
         Ball _ball = collision.gameObject.GetComponent<Ball>();
 

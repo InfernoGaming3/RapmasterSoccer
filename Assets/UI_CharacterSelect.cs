@@ -27,21 +27,21 @@ public class UI_CharacterSelect : MonoBehaviour
 
         rapperButton.onClick.AddListener(() =>
         {
-            print("rapper clicked!");
+            //print("rapper clicked!");
             GameMaster.instance.UpdateP1Character("rap");
             p1Image.sprite = GameMaster.instance.p1Character.cssSprite;
         });
 
         djButton.onClick.AddListener(() =>
         {
-            print("dj clicked!");
+            //print("dj clicked!");
             GameMaster.instance.UpdateP1Character("dj");
             p1Image.sprite = GameMaster.instance.p1Character.cssSprite;
         });
 
         cheetahButton.onClick.AddListener(() =>
         {
-            print("cheetah clicked!");
+            //print("cheetah clicked!");
             GameMaster.instance.UpdateP1Character("cheetah");
             p1Image.sprite = GameMaster.instance.p1Character.cssSprite;
         });
